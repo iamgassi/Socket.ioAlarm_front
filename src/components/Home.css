@@ -1,0 +1,66 @@
+.alarm
+{
+    
+   height: 100%;
+   width: 50%;
+   background-color: rgb(184, 43, 43);
+}
+.rightside
+{
+     height: 100%;
+     width: 65%;
+   background-color: rgb(248 249 251);
+  
+}
+
+.add{
+   position: relative;
+   bottom: 0;
+   right: 0;
+
+}
+li:hover{
+   background: #dcdbdb;
+}
+.optionDot
+{
+   float:right;
+   
+}
+.username
+{
+   color:rgb(233, 241, 241);
+   font-weight: 700;
+   font-size: larger;
+   
+}
+.ListUsername
+{
+   color:rgb(76, 77, 77);
+   font-weight: 700;
+   font-size: larger;  
+}
+.nav{
+   background-color: #00a884;
+}
+
+.app__container,
+.alarm {
+  height: 90vh;
+  width: 30vw;
+  background-color: #f8f9fa;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s linear;
+  box-shadow: 0 0 12px -2px rgba(0, 0, 0, 0.5);
+}
+
+.alert
+{
+    position: absolute;
+    left:5rem;
+    top: 5rem;
+   
+    
+}
