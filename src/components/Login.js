@@ -6,10 +6,11 @@ import LoginIcon from '@mui/icons-material/Login';
 
 import Cookies from 'universal-cookie'
 import Home from './Home';
+import bg from './new.jpg'
 
 const cookies=new Cookies();
 const Login = () => {
-  // const ENDPOINT='https://app-reactchatapp.herokuapp.com'
+
   const ENDPOINT='http://localhost:5000'
   const navigate = useNavigate();
 
@@ -96,13 +97,12 @@ const Login = () => {
   return (
           <>
              {(!cookies.get('loggedIn'))?(
-                <div className="app">
-                <div className="app__top"></div>
-              
+                <div className="app" style={{backgroundImage:`url(${bg})`, backgroundPosition: "center",    backgroundRepeat: "no-repeat"}}>
+                            
              
-                 <div className='start'>
-             <div className='main'>
-             <h3 className='heading'><LoginIcon  fontSize='large'></LoginIcon>Login Page </h3>
+             <div className='start' >
+             <div className='main' >
+             <h3 className='heading' ><LoginIcon  fontSize='large'></LoginIcon>Login Page </h3>
              <form onSubmit={(e)=>handleSubmit(e)}>
             
              <Input placeholder='Username'
@@ -122,15 +122,16 @@ const Login = () => {
 
              <span>
              <LoadingButton 
+             style={{backgroundColor:"#000000",color:  "#ffffff",    borderColor: "black" }}
                loading={isLoading}
                sx={{mr: 1}}
                type='submit'
                variant="contained"
-               color="success"
+               color="primary"
                >LogIn</LoadingButton>
 
              <Link to="/register">
-             <Button variant="outlined" color="success" >Register</Button>
+             <Button variant="outlined"  style={{backgroundColor: "#ffffff",color:"#000000",    borderColor: "black" }}>Register</Button>
              </Link>
              </span>
              </form>

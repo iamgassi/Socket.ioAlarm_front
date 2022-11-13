@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import './Home.css'
-import { Avatar } from '@mui/material';
+import { AlertTitle, Avatar } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import { Alert } from '@mui/material';
 import moment from 'moment'
+import home from './new.jpg'
+import ScrollToBottom from 'react-scroll-to-bottom';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -36,6 +38,7 @@ import Stack from '@mui/material/Stack';
 
 import io from 'socket.io-client'
 import Alarm from './Alarm';
+import AlartMessage from './AlartMessage';
  
 const cookies = new Cookies();
 
@@ -51,6 +54,7 @@ const ITEM_HEIGHT = 48;
   const Home = () => {
   const [value, setValue] = React.useState(dayjs(new Date()));
     const [alert,setAlert]=useState(false)
+    const [alartTitle, setalartTitle] = useState('Success')
     const [alertMsg,setAlertMsg]=useState('')
 
     useEffect(()=>{
@@ -58,15 +62,13 @@ const ITEM_HEIGHT = 48;
 
         socket.on('reminder',(msg)=>{
               console.log(msg)
-              return  (setAlert(true),setAlertMsg(msg))
+              return  (setAlert(true),setAlertMsg(msg),setalartTitle('Success'))
         })         
         return ()=>{
           socket.disconnect();
           socket.off()
         }
       },[])
-
-
 
   const ENDPOINT='http://localhost:5000'
   const [allUsers, setallUsers] = useState([])
@@ -156,6 +158,10 @@ const ITEM_HEIGHT = 48;
     // e.preventDefault()
     console.log("insode alartm",value)
     if (value) {
+      setAlert(true)
+      setAlertMsg("Alarm set successfully")
+      setnotification('success')
+      setalartTitle('Success')
 
      let obj={
       username:user.username,
@@ -185,10 +191,11 @@ const ITEM_HEIGHT = 48;
     const currentDateTime = new Date();
     console.log(currentDateTime,recievedDateTime)
     if(currentDateTime > new Date(recievedDateTime)){
-      setAlertMsg('Date time should be grater than ')
+      setAlertMsg('Date time must be greater than current Time')
       setAlert(true);
       setopenAlarmPopup(false)
       setnotification("error")
+      setalartTitle('Failed')
     }
     else{
       console.log(recievedDateTime,'onchange')
@@ -197,17 +204,12 @@ const ITEM_HEIGHT = 48;
   }
   
   return (
-    <div className="app">
-    <div className="app__top"></div>
-    <div className="app__container">
-      <div className='alarm'>
+    <div className="app" style={{backgroundImage:`url(${home})`, backgroundPosition: "center",    backgroundRepeat: "no-repeat" ,}}>
+    <div className="app__container" >
+      <div className='alarm'  >
       <div className='nav'>
-      <IconButton>
-      <Avatar  alt="A Sharp" />
-  
-      </IconButton>
-     
-       <span className='username'> {user.username}</span>
+    
+       <span className='username'>Hello , {user.username}</span>
     
 
       <IconButton   
@@ -245,44 +247,42 @@ const ITEM_HEIGHT = 48;
 
       </Menu>
 
-      <div className='alert'>
-       {alert?(
-         setTimeout(() => {
-          setAlert(false)
-         }, 2000) ,
-        <Alert icon={<CheckIcon fontSize="inherit" />}  severity={notification}>{alertMsg}</Alert>
-      ):null}
-      </div>
+     
 
       </div>
+      
 
-       {fetchalarm.length?( <List sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}>
+  
+       {fetchalarm.length?( 
+         
+         <List className='listItems' sx={{ width: '100%', maxWidth: 1520, bgcolor: 'background.paper' }}>
 
           {
             fetchalarm.map(alarm=>
               {   
                 return (
-                  <div  key={alarm.alarmTime}>
+                  <>
     
         
-           <ListItem alignItems="flex-start" style={{cursor:"pointer"}}>
+           <ListItem disabled={(new Date(alarm.alarmTime)>new Date())?false:true} key={alarm.alarmTime} alignItems="flex-start" style={{cursor:"pointer"}}>
            <ListItemAvatar>
-           {(new Date(alarm.alarmTime)>new Date())?(<AccessAlarmIcon></AccessAlarmIcon>):<AlarmOffIcon></AlarmOffIcon>}
+           {(new Date(alarm.alarmTime)>new Date())?(<AccessAlarmIcon></AccessAlarmIcon>):<AlarmOffIcon ></AlarmOffIcon>}
            </ListItemAvatar>
            <ListItemText 
+           disableTypography={true}
            className='ListUsername'
            primary={
-            moment((alarm.alarmTime.split('G')[0])).format('h:mm:ss A || MMM Do YYYY')
+            moment((alarm.alarmTime.split('G')[0])).format('Do MMM YYYY || h:mm:ss A')
           }
            secondary={
             <React.Fragment>
               <Typography
                 sx={{ display: 'inline' }}
                 component="span"
-                variant="body2"
+                variant="body1"
                 color="text.primary"
               >
-           {(new Date(alarm.alarmTime)>new Date())?(moment((alarm.alarmTime.split('G')[0])).calendar()):("Alarm Reached 😴")}
+           {(new Date(alarm.alarmTime)>new Date())?<p>{(moment((alarm.alarmTime.split('G')[0])).calendar())}</p>:<p >Alarm Reached 😴</p>}
 
              
               </Typography>
@@ -294,7 +294,7 @@ const ITEM_HEIGHT = 48;
     
       <Divider variant="inset" component="li" />
                  
-                  </div>
+                  </>
 
                 )
               })
@@ -303,8 +303,8 @@ const ITEM_HEIGHT = 48;
     // , <Alarm/>    
     ):
     (
-   
-    <List sx={{ width: '100%', maxWidth: 620, bgcolor: 'background.paper' }}>
+      
+      <List sx={{ width: '100%', maxWidth: 1520, bgcolor: 'background.paper' }}>
  
       <ListItem alignItems="flex-start" style={{cursor:"pointer"}}>
            <ListItemAvatar>
@@ -312,8 +312,8 @@ const ITEM_HEIGHT = 48;
            </ListItemAvatar>
            <ListItemText
            className='ListUsername'
-          primary={"Create Alarm"}
-          secondary={
+           primary={"Create Alarm"}
+           secondary={
             <React.Fragment>
               <Typography
                 sx={{ display: 'inline' }}
@@ -321,20 +321,35 @@ const ITEM_HEIGHT = 48;
                 variant="body2"
                 color="text.primary"
                 
-              >
+                >
                New Alarm
               </Typography>
              
             </React.Fragment>
           }
-          onClick={handleClickOpen('paper')}
+          onClick={()=>setopenAlarmPopup(true)}
           
           />
       </ListItem>
       </List>
 
-    )
-    }
+)
+}
+
+
+<div className='alert' style={{ boxShadow: "0 0 10px 5px rgb(55 47 51 / 56%)"}}>
+       {alert?(
+         setTimeout(() => {
+          setAlert(false)
+         }, 4000) ,
+        // <Alert icon={<CheckIcon fontSize="inherit" />}  severity={notification}>{alertMsg}</Alert>
+        <Alert severity={notification} style={{}}>
+        <AlertTitle>{alartTitle}</AlertTitle>
+        {alertMsg} — <strong>check it out!</strong>
+      </Alert>
+      // <AlartMessage/>
+      ):null}
+      </div>
 
       </div>
 
@@ -358,7 +373,8 @@ const ITEM_HEIGHT = 48;
       </div>
 
       {openAlarmPopup &&
-    (<LocalizationProvider dateAdapter={AdapterDayjs}>
+    (<div className='alert'>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Stack spacing={3}>
         <MobileDateTimePicker
           open={openAlarmPopup}
@@ -374,6 +390,7 @@ const ITEM_HEIGHT = 48;
         />
         </Stack>
         </LocalizationProvider>
+        </div>
         )}
       </div>
   )

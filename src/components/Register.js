@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Input,Button } from '@mui/material';
 import {Link} from 'react-router-dom'
+import bg from './new.jpg'
 
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 const Register = () => {
@@ -63,8 +64,8 @@ const Register = () => {
        )}
     
   return (
-        <div className="app">
-    <div className="app__top"></div>
+        <div className="app" style={{backgroundImage:`url(${bg})`, backgroundPosition: "center",    backgroundRepeat: "no-repeat"}}>
+
   
   
      <div className='start'>
@@ -89,6 +90,7 @@ const Register = () => {
               required={true} 
              /><br></br><br></br>
              <Input type='password' placeholder='Confirm Password'
+        
               value={repeatPass}
               onChange={(e)=>{
                   setRepeatPass(e.target.value)
@@ -97,9 +99,9 @@ const Register = () => {
              /><br></br><br></br>
 
              <span>
-             <Button sx={{mr: 2}} variant="contained" color="success" type='submit'>Register</Button>
+             <Button sx={{mr: 2}} variant="contained" style={{backgroundColor:"#000000",color:  "#ffffff",    borderColor: "black" }} type='submit'>Register</Button>
              <Link to="/">
-             <Button color="success" variant="outlined"  >LogIn</Button>
+             <Button style={{backgroundColor: "#ffffff",color:"#000000",    borderColor: "black" }} variant="outlined"  >LogIn</Button>
              </Link>
              </span>
              </form>

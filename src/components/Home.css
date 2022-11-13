@@ -41,11 +41,12 @@ li:hover{
    font-size: larger;  
 }
 .nav{
-   background-color: #00a884;
+   background-color: #000000;
 }
 
 .app__container,
 .alarm {
+  margin-right: 50%;  
   height: 90vh;
   width: 30vw;
   background-color: #f8f9fa;
@@ -53,14 +54,30 @@ li:hover{
   display: flex;
   flex-direction: column;
   transition: all 0.25s linear;
-  box-shadow: 0 0 12px -2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px 5px rgb(55 47 51 / 56%);
 }
 
 .alert
 {
     position: absolute;
     left:5rem;
-    top: 5rem;
+    bottom: 5rem;
    
     
 }
+.listItems
+{
+   max-height: 91%;
+   scroll-behavior: auto;
+   overflow-y: auto
+}
+
+@media screen and (min-width: 0px) and (max-width: 1440px) {
+   .app__container,
+   .alarm {
+     height: 100%;
+     width: 100vw;
+     overflow-y: auto
+
+   }
+ }

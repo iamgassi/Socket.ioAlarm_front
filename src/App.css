@@ -1,7 +1,7 @@
+
 .app {
   height: 100vh;
   width: 100vw;
-  background-color: #dadbd4;
   position: relative;
   display: grid;
   place-items: center;
@@ -19,21 +19,22 @@
 .login {
   height: 95vh;
   width: 91vw;
-  background-color: #f8f9fa;
+  background-color:#e6e6e6;;
   z-index: 10;
   display: flex;
   transition: all 0.25s linear;
-  box-shadow: 0 0 12px -2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 12px -2px rgba(223, 223, 223, 0.5);
 }
 
 .start{
   height: 90vh;
-  width: 40vw;
-  background-color: #f8f9fa;
+  width: 30vw;
+  background-color: #ffffff;;
   z-index: 10;
+  margin-right: 50%;  
   display: flex;
   transition: all 0.25s linear;
-  box-shadow: 0 0 12px -2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px 5px rgba(247, 247, 247, 0.5);
 }
 a {
   text-decoration: none;
@@ -42,6 +43,7 @@ a {
 @media screen and (min-width: 0px) and (max-width: 1440px) {
   .app__container,
   .start {
+  margin: auto;  
     height: 100vh;
     width: 100vw;
   }
@@ -64,20 +66,20 @@ a {
   margin: auto;
   min-width: 30%;
   min-height: 88%;
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   
 }
 
 .heading{
+
   font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color:rgb(18, 153, 119);
+  color:#000000;
   font-size: larger;
   text-decoration:underline;
   /* font-weight: 700  ; */
 }
-
 
 
