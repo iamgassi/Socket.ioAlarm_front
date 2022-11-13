@@ -51,6 +51,8 @@ const ITEM_HEIGHT = 48;
 
   let socket;
 
+
+
   const Home = () => {
   const [value, setValue] = React.useState(dayjs(new Date()));
     const [alert,setAlert]=useState(false)
@@ -70,6 +72,7 @@ const ITEM_HEIGHT = 48;
         }
       },[])
 
+
   const ENDPOINT='http://localhost:5000'
   const [allUsers, setallUsers] = useState([])
   const [user, setuser] = useState([])
@@ -85,10 +88,6 @@ const ITEM_HEIGHT = 48;
   const [openAlarmPopup, setopenAlarmPopup] = useState(false)
   const [notification, setnotification] = useState("success")
 
-  const handleClickOpen = (scrollType) => () => {
-    setOpen1(true);
-
-  };
 
   const handleClose1 = () => {
     setOpen1(false);
@@ -263,10 +262,9 @@ const ITEM_HEIGHT = 48;
                 return (
                   <>
     
-        
            <ListItem disabled={(new Date(alarm.alarmTime)>new Date())?false:true} key={alarm.alarmTime} alignItems="flex-start" style={{cursor:"pointer"}}>
            <ListItemAvatar>
-           {(new Date(alarm.alarmTime)>new Date())?(<AccessAlarmIcon></AccessAlarmIcon>):<AlarmOffIcon ></AlarmOffIcon>}
+           {(new Date(alarm.alarmTime)>new Date())?(<AccessAlarmIcon fontSize='large'></AccessAlarmIcon>):<AlarmOffIcon fontSize='large' ></AlarmOffIcon>}
            </ListItemAvatar>
            <ListItemText 
            disableTypography={true}
@@ -282,7 +280,7 @@ const ITEM_HEIGHT = 48;
                 variant="body1"
                 color="text.primary"
               >
-           {(new Date(alarm.alarmTime)>new Date())?<p>{(moment((alarm.alarmTime.split('G')[0])).calendar())}</p>:<p >Alarm Reached 😴</p>}
+           {(new Date(alarm.alarmTime)>new Date())?<p><strong>{(moment((alarm.alarmTime.split('G')[0])).calendar())}</strong></p>:<p> <strong>Alarm Reached 😴</strong></p>}
 
              
               </Typography>
@@ -308,9 +306,10 @@ const ITEM_HEIGHT = 48;
  
       <ListItem alignItems="flex-start" style={{cursor:"pointer"}}>
            <ListItemAvatar>
-           <Avatar alt={"S"} src="#" />
+           <AccessAlarmIcon fontSize='large'></AccessAlarmIcon>
            </ListItemAvatar>
            <ListItemText
+             disableTypography={true}
            className='ListUsername'
            primary={"Create Alarm"}
            secondary={
@@ -322,7 +321,7 @@ const ITEM_HEIGHT = 48;
                 color="text.primary"
                 
                 >
-               New Alarm
+              <p><strong>New Alarm</strong> </p>
               </Typography>
              
             </React.Fragment>
@@ -358,13 +357,6 @@ const ITEM_HEIGHT = 48;
     
    
     </div>
-
-          
-
-
-
-      
-       
           {/* <form onSubmit={handleAlarm}>
          <label for="alarmdaytime">Set Alarm</label>
         <input type='datetime-local'id="alarmdaytime" name="alarmdaytime" onChange={e=>handleDateTime(e)} />
@@ -375,20 +367,20 @@ const ITEM_HEIGHT = 48;
       {openAlarmPopup &&
     (<div className='alert'>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Stack spacing={3}>
+     
         <MobileDateTimePicker
           open={openAlarmPopup}
           onAccept={e=>{handleDateTime(value)}}
           onClose={e=>{setopenAlarmPopup(false)}}
           // closeOnSelect={false}
           disablePast={true}
-          openTo={'day' || 'hours' || 'minutes' || 'month' || 'year' || 'seconds'}
-          label="For mobile"
+          openTo={'day' || 'hours' || 'seconds' || 'minutes' || 'month' || 'year' }
+          label="Set Alarm"
           value={value}
           onChange={(newValue) => setValue(newValue)}
-          renderInput={(params) => <TextField {...params} />}
+          renderInput={(params) => <TextField  {...params} />}
         />
-        </Stack>
+      
         </LocalizationProvider>
         </div>
         )}

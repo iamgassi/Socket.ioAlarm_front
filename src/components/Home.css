@@ -54,7 +54,7 @@ li:hover{
   display: flex;
   flex-direction: column;
   transition: all 0.25s linear;
-  box-shadow: 0 0 10px 5px rgb(55 47 51 / 56%);
+  box-shadow: 0 0 10px 2px rgba(247, 247, 247, 0.5);
 }
 
 .alert
