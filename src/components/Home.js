@@ -5,7 +5,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import { Alert } from '@mui/material';
 import moment from 'moment'
 import home from './new.jpg'
-import ScrollToBottom from 'react-scroll-to-bottom';
+import DeleteIcon from '@mui/icons-material/Delete';
 import ReactAudioPlayer from 'react-audio-player';
 import audioFile from './audio.wav'
 
@@ -58,6 +58,7 @@ const ITEM_HEIGHT = 48;
   const Home = () => {
   const [value, setValue] = React.useState(dayjs(new Date()));
     const [alert,setAlert]=useState(false)
+    const [updated, setupdated] = useState(false)
     const [alartTitle, setalartTitle] = useState('Success')
     const [alertMsg,setAlertMsg]=useState('')
 
@@ -65,8 +66,14 @@ const ITEM_HEIGHT = 48;
         socket=io(ENDPOINT);
 
         socket.on('reminder',(msg)=>{
-              console.log(msg)
-              return  (setaudioPlay(true),setAlert(true),setAlertMsg(msg),setalartTitle('Success'))
+              console.log(msg) 
+        return  ( 
+        setaudioPlay(true),
+        setAlert(true),
+        setAlertMsg(msg),
+        setalartTitle('Success'),
+        setnotification('success')
+        )
         })         
         return ()=>{
           socket.disconnect();
@@ -113,7 +120,7 @@ const ITEM_HEIGHT = 48;
     socket.emit("user join",userId)
     console.log("user join emited in on load")
 
-   },[openAlarmPopup]);
+   },[openAlarmPopup,updated]);
 
   
   const onLoad=async()=>{
@@ -158,11 +165,11 @@ const ITEM_HEIGHT = 48;
 
   const handleAlarm=()=>{
     // e.preventDefault()
-    console.log("insode alartm",value)
+    // console.log("insode alartm",value)
     if (value) {
       setAlert(true)
       setAlertMsg("Alarm set successfully")
-      setnotification('success')
+      setnotification('info')
       setalartTitle('Success')
 
      let obj={
@@ -191,7 +198,7 @@ const ITEM_HEIGHT = 48;
 
   const handleDateTime=(recievedDateTime)=>{
     const currentDateTime = new Date();
-    console.log(currentDateTime,recievedDateTime)
+    // console.log(currentDateTime,recievedDateTime)
     if(currentDateTime > new Date(recievedDateTime)){
       setAlertMsg('Date time must be greater than current Time')
       setAlert(true);
@@ -200,9 +207,32 @@ const ITEM_HEIGHT = 48;
       setalartTitle('Failed')
     }
     else{
-      console.log(recievedDateTime,'onchange')
+      // console.log(recievedDateTime,'onchange')
       handleAlarm()
     }
+  }
+
+  const handleDelete=(id)=>{
+    try {
+    
+      fetch(`${ENDPOINT}/delete/${id}`,{
+       mode: 'cors',
+       method:"POST",
+       headers:{
+         "Content-Type":"application/json",
+       }
+     })
+     setupdated(true)
+     setAlert(true)
+     setAlertMsg("Deleted successfully!")
+     setnotification('info')
+     setalartTitle('Deleted')
+
+    } catch (error) {
+     console.log(error)
+    }
+
+    
   }
   
   return (
@@ -289,10 +319,13 @@ const ITEM_HEIGHT = 48;
            {(new Date(alarm.alarmTime)>new Date())?<p><strong>{(moment((alarm.alarmTime.split('G')[0])).calendar())}</strong></p>:<p> <strong>Alarm Reached 😴</strong></p>}
 
               </Typography>
-             
             </React.Fragment>
-          }
+
+            }
           />
+              {/* <IconButton edge="end" aria-label="delete"  >
+              <DeleteIcon fontSize='large' onChange={()=>setupdated(false)} onClick={()=>handleDelete(alarm._id)} />
+            </IconButton> */}
       </ListItem>
     
       <Divider variant="inset" component="li"  />
