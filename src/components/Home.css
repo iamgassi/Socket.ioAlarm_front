@@ -65,6 +65,15 @@ li:hover{
    
     
 }
+
+.hideIt
+{
+    position: absolute;
+    left:-99999px;
+    bottom: -99999px;
+   
+    
+}
 .listItems
 {
    max-height: 91%;

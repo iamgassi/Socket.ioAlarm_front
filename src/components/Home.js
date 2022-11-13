@@ -6,6 +6,8 @@ import { Alert } from '@mui/material';
 import moment from 'moment'
 import home from './new.jpg'
 import ScrollToBottom from 'react-scroll-to-bottom';
+import ReactAudioPlayer from 'react-audio-player';
+import audioFile from './audio.wav'
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -64,7 +66,7 @@ const ITEM_HEIGHT = 48;
 
         socket.on('reminder',(msg)=>{
               console.log(msg)
-              return  (setAlert(true),setAlertMsg(msg),setalartTitle('Success'))
+              return  (setaudioPlay(true),setAlert(true),setAlertMsg(msg),setalartTitle('Success'))
         })         
         return ()=>{
           socket.disconnect();
@@ -85,6 +87,7 @@ const ITEM_HEIGHT = 48;
   const navigate = useNavigate();
 
   const [open1, setOpen1] = React.useState(false);
+  const [audioPlay, setaudioPlay] = useState(false)
   const [openAlarmPopup, setopenAlarmPopup] = useState(false)
   const [notification, setnotification] = useState("success")
 
@@ -207,6 +210,9 @@ const ITEM_HEIGHT = 48;
     <div className="app__container" >
       <div className='alarm'  >
       <div className='nav'>
+
+     
+
     
        <span className='username'>Hello , {user.username}</span>
     
@@ -262,8 +268,8 @@ const ITEM_HEIGHT = 48;
                 return (
                   <>
     
-           <ListItem disabled={(new Date(alarm.alarmTime)>new Date())?false:true} key={alarm.alarmTime} alignItems="flex-start" style={{cursor:"pointer"}}>
-           <ListItemAvatar>
+           <ListItem disabled={(new Date(alarm.alarmTime)>new Date())?false:true} key={alarm.id} alignItems="flex-start" style={{cursor:"pointer"}}>
+           <ListItemAvatar >
            {(new Date(alarm.alarmTime)>new Date())?(<AccessAlarmIcon fontSize='large'></AccessAlarmIcon>):<AlarmOffIcon fontSize='large' ></AlarmOffIcon>}
            </ListItemAvatar>
            <ListItemText 
@@ -282,7 +288,6 @@ const ITEM_HEIGHT = 48;
               >
            {(new Date(alarm.alarmTime)>new Date())?<p><strong>{(moment((alarm.alarmTime.split('G')[0])).calendar())}</strong></p>:<p> <strong>Alarm Reached 😴</strong></p>}
 
-             
               </Typography>
              
             </React.Fragment>
@@ -290,7 +295,7 @@ const ITEM_HEIGHT = 48;
           />
       </ListItem>
     
-      <Divider variant="inset" component="li" />
+      <Divider variant="inset" component="li"  />
                  
                   </>
 
@@ -340,12 +345,20 @@ const ITEM_HEIGHT = 48;
        {alert?(
          setTimeout(() => {
           setAlert(false)
+          setaudioPlay(false)
          }, 4000) ,
-        // <Alert icon={<CheckIcon fontSize="inherit" />}  severity={notification}>{alertMsg}</Alert>
-        <Alert severity={notification} style={{}}>
+         <div>
+           <ReactAudioPlayer
+            src={audioFile}
+            autoPlay={audioPlay}
+            onPlay={e => console.log("onPlay------------")}
+            />
+        <Alert severity={notification}>
         <AlertTitle>{alartTitle}</AlertTitle>
         {alertMsg} — <strong>check it out!</strong>
-      </Alert>
+        </Alert>
+          </div>
+        // <Alert icon={<CheckIcon fontSize="inherit" />}  severity={notification}>{alertMsg}</Alert>
       // <AlartMessage/>
       ):null}
       </div>
